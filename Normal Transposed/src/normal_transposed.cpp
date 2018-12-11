@@ -1,9 +1,8 @@
-#include <vector>
 #include "utility.h"
 
 template <bool Transposed>
 auto mult_impl(const std::vector<std::vector<double>>& a,
-	const std::vector<std::vector<double>>& b)
+               const std::vector<std::vector<double>>& b)
 {
 	const auto size = static_cast<int>(a.size());
 
@@ -31,12 +30,13 @@ auto mult_impl(const std::vector<std::vector<double>>& a,
 }
 
 auto mult_transposed(const std::vector<std::vector<double>>& a,
-	const std::vector<std::vector<double>>& b)
+                     const std::vector<std::vector<double>>& b)
 {
 	return mult_impl<true>(a, b);
 }
 
-int main() {
-	test("Normal Transposed", mult_transposed, 2048);
+int main()
+{
+	test("Normal Transposed", mult_transposed, 2048, true);
 	return 0;
 }

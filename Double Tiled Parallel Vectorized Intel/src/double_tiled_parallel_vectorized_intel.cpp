@@ -3,7 +3,7 @@
 
 template <bool Transposed>
 auto mult_2_tiled_impl(const std::vector<std::vector<double>>& a,
-	const std::vector<std::vector<double>>& b)
+                       const std::vector<std::vector<double>>& b)
 {
 	const auto size = static_cast<int>(a.size());
 	const auto tile_size = 128;
@@ -36,20 +36,20 @@ auto mult_2_tiled_impl(const std::vector<std::vector<double>>& a,
 										if constexpr (!Transposed)
 										{
 											sum += a[tile_y * tile_size + subtile_y * subtile_size + y]
-												[tile_k * tile_size + subtile_k * subtile_size + k]
-											* b[tile_k * tile_size + subtile_k * subtile_size + k]
-												[tile_x * tile_size + subtile_x * subtile_size + x];
+													[tile_k * tile_size + subtile_k * subtile_size + k]
+												 * b[tile_k * tile_size + subtile_k * subtile_size + k]
+													[tile_x * tile_size + subtile_x * subtile_size + x];
 										}
 										else
 										{
 											sum += a[tile_y * tile_size + subtile_y * subtile_size + y]
-												[tile_k * tile_size + subtile_k * subtile_size + k]
-											* b[tile_x * tile_size + subtile_x * subtile_size + x]
-												[tile_k * tile_size + subtile_k * subtile_size + k];
+													[tile_k * tile_size + subtile_k * subtile_size + k]
+												 * b[tile_x * tile_size + subtile_x * subtile_size + x]
+													[tile_k * tile_size + subtile_k * subtile_size + k];
 										}
 									}
 									c[tile_y * tile_size + subtile_y * subtile_size + y]
-										[tile_x * tile_size + subtile_x * subtile_size + x] += sum;
+									 [tile_x * tile_size + subtile_x * subtile_size + x] += sum;
 								}
 							}
 						}
@@ -63,20 +63,20 @@ auto mult_2_tiled_impl(const std::vector<std::vector<double>>& a,
 }
 
 auto mult_2_tiled(const std::vector<std::vector<double>>& a,
-	const std::vector<std::vector<double>>& b)
+                  const std::vector<std::vector<double>>& b)
 {
 	return mult_2_tiled_impl<false>(a, b);
 }
 
 auto mult_2_tiled_transposed(const std::vector<std::vector<double>>& a,
-	const std::vector<std::vector<double>>& b)
+                             const std::vector<std::vector<double>>& b)
 {
 	return mult_2_tiled_impl<true>(a, b);
 }
 
 int main()
 {
-	test("Double Tiled Parallel Vectorized Intel", mult_2_tiled, 2048);
-	test("Double Tiled Parallel Vectorized Intel Transposed", mult_2_tiled_transposed, 2048);
+	test("Double Tiled Parallel Vectorized Intel", mult_2_tiled, 2048, false);
+	test("Double Tiled Parallel Vectorized Intel Transposed", mult_2_tiled_transposed, 2048, true);
 	return 0;
 }

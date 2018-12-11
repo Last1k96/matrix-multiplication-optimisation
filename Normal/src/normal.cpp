@@ -1,8 +1,7 @@
-#include <vector>
 #include "utility.h"
 
 auto mult(const std::vector<std::vector<double>>& a,
-	const std::vector<std::vector<double>>& b)
+          const std::vector<std::vector<double>>& b)
 {
 	const auto size = static_cast<int>(a.size());
 
@@ -23,8 +22,8 @@ auto mult(const std::vector<std::vector<double>>& a,
 }
 
 
-int main() {
-
-	test("Normal", mult, 2048);
+int main()
+{
+	test("Normal", mult, 2048, false);
 	return 0;
 }
