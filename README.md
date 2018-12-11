@@ -13,9 +13,8 @@ Visual Studio 2017
 Сборка Release x64
 Оптимизирующий компилятор Microsoft (R) C/C++ версии 19.16.27024.1 для x64
 Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Version 19.0.1.144 Build 20181018
-```
-ЦП
-```
+
+Процессор:
   Intel(R) Core(TM) i7-4700HQ CPU @ 2.40GHz
   Максимальная скорость:  2,40 ГГц
   Сокетов:  1
@@ -31,7 +30,7 @@ Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Versi
 
 Обусловимся перемножать квадратные матрицы размера 2^n.
 
-Наивный алгоритм перемножает строку матрицы A на столбец матрицы B и суммирует в ячейку матрицы C. 
+Простой алгоритм перемножает строку матрицы A на столбец матрицы B и суммирует в ячейку матрицы C. 
 
 ```
 2048, Normal: 83.8924 s.
@@ -39,7 +38,7 @@ Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Versi
 
 ### Performance problem #1
 
-Очевидная проблема простого подхода – кэш промахи. Получив значение матрицы B, процессор prefetch (подгружает) значения поблизости в кэш. Но т.к. чтение производится по столбцу, процессор не использует prefetched значения (если, конечно, вся матрица не уберется в L1 кэш). Следовательно получаем cache miss.
+Очевидная проблема простого подхода – кэш промахи. Получив значение матрицы B, процессор prefetch (подгружает) значения поблизости в кэш. Но т.к. умножение на эту матрицу производится по столбцу, процессор не использует prefetched значения (если, конечно, вся матрица не уберется в L1 кэш). Следовательно получаем cache miss.
 
 ### Solution #1
 
@@ -48,6 +47,7 @@ Intel(R) C++ Intel(R) 64 Compiler for applications running on Intel(R) 64, Versi
 ```
 2048, Normal Transposed: 9.49514 s.
 ```
+Такой подход сразу дает огромный прирост в скорости в ~10 раз.
 
 ### Performance problem #2
 
@@ -65,6 +65,7 @@ n = sqrt(256 * 1024 / (3 * 8)) = 104.51.
 2048, Tiled: 8.12238 s.
 2048, Tiled Transposed: 8.06461 s.
 ```
+Прирост в скорости ~17%
 
 ### Performance problem #3
 
@@ -78,6 +79,7 @@ n = sqrt(256 * 1024 / (3 * 8)) = 104.51.
 2048, Tiled Parallel: 1.83215 s.
 2048, Tiled Parallel Transposed: 1.46838 s.
 ```
+Прирост в скорости в ~5 раз.
 
 ### Performance problem??? #4 
 
@@ -98,6 +100,7 @@ n = sqrt(256 * 1024 / (3 * 8)) = 104.51.
 2048, Double Tiled Parallel: 1.77569 s.
 2048, Double Tiled Parallel Transposed: 1.55421 s.
 ```
+Результаты схожи с предыдущим решением.
 
 ### Performance problem #5
 
@@ -128,6 +131,7 @@ percis FP model implied by the command line or a directive prevents vectorizatio
 2048, Double Tiled Parallel Vectorized: 1.94252 s.
 2048, Double Tiled Parallel Vectorized Transposed: 1.0584 s.
 ```
+Прирост в скорости после векторизации ~40%
 
 ### Performance (recomendation) #6
 
@@ -150,64 +154,4 @@ Intel Adviser рекомендует использовать директиву
 2048, Double Tiled Parallel Vectorized Intel: 1.73502 s.
 2048, Double Tiled Parallel Vectorized Intel Transposed: 0.485537 s.
 ```
- 
- Блочный алгоритм с (64x64) и двойной блочный алгоритм (128x128) показывают похожие результаты. Ускорение по сравнению с обычным алгоритмом в ~150 раз.
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Блочный алгоритм с (64x64) и двойной блочный алгоритм (128x128) показывают похожие результаты. Ускорение по сравнению с обычным алгоритмом в ~150 раз.
