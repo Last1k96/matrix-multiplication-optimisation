@@ -121,10 +121,10 @@ C сайта MSDN узнаём, что причина «1200»:
 Чтобы решить эту проблему рекомендуется переписать код. Вероятно класс tile мешает компилятору. Так же в интернетах была рекомендация – суммировать в локальную переменную. Я так и сделал. Но мне так и не удалось уговорить компилятор векторизировать цикл. В результате было решено использовать компилятор *Intel 19.0*. после этого *Intel Adviser* дал более информативное сообщение.
 
 ```
-percis FP model implied by the command line or a directive prevents vectorization. Consider using fast FP model. 
+Percise FP model implied by the command line or a directive prevents vectorization. Consider using fast FP model. 
 ```
 
-Добавим директиву /fp:fast в командную строку. 
+Добавим директиву /fp:fast в командную строку. Intel Adviser показал, что векторизация цикла удалась.
 
 ```
 2048, Double Tiled Parallel Vectorized: 1.94252 s.
